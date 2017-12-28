@@ -24,6 +24,8 @@
         <module>organization-service</module>
         <module>licensing-service</module>
         <module>zuulsvr</module>
+        <module>orgservice-new</module>
+        <module>specialroutes-service</module>
     </modules>
 
     <build>
