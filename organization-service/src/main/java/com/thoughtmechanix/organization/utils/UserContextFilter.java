@@ -31,7 +31,7 @@ public class UserContextFilter implements Filter {
                 httpServletRequest.getHeader(UserContext.ORG_ID));
 
         logger.debug(
-                "License Service Incoming Correlation id: {}",
+                "Organization Service Incoming Correlation id: {}",
                 UserContextHolder.getContext().getCorrelationId());
 
         filterChain.doFilter(servletRequest, servletResponse);
