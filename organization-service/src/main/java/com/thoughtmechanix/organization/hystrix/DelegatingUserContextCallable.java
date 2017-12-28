@@ -1,7 +1,7 @@
-package com.thoughtmechanix.licenses.hystrix;
+package com.thoughtmechanix.organization.hystrix;
 
-import com.thoughtmechanix.licenses.utils.UserContext;
-import com.thoughtmechanix.licenses.utils.UserContextHolder;
+import com.thoughtmechanix.organization.utils.UserContext;
+import com.thoughtmechanix.organization.utils.UserContextHolder;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.Callable;

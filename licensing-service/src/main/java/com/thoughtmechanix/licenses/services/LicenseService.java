@@ -70,6 +70,7 @@ public class LicenseService {
         return organization;
     }
 
+    @HystrixCommand
     public License getLicense(String organizationId, String licenseId, String clientType) {
         License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
 
@@ -120,7 +121,8 @@ public class LicenseService {
                     @HystrixProperty(
                             name = "circuitBreaker.sleepWindowInMilliseconds",
                             value = "7000"),
-                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds",
+                    @HystrixProperty(
+                            name = "metrics.rollingStats.timeInMilliseconds",
                             value = "15000"),
                     @HystrixProperty(
                             name = "metrics.rollingStats.numBuckets",

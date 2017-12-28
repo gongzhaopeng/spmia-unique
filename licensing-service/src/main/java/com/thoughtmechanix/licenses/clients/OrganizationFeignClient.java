@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Created by gongzhaopeng on 08/12/2017.
  */
-@FeignClient("organizationservice")
+@FeignClient("zuulservice")
 public interface OrganizationFeignClient {
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/v1/organizations/{organizationId}",
+            value = "/api/organization/v1/organizations/{organizationId}",
             consumes = "application/json")
     Organization getOrganization(@PathVariable("organizationId") String organizationId);
 }
