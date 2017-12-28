@@ -143,6 +143,10 @@ public class SpecialRoutesFilter extends ZuulFilter {
     }
 
     private void setResponse(HttpResponse response) throws IOException {
+        System.out.println(String.format("statusCode: %s <=> headers: %s",
+                response.getStatusLine().getStatusCode(),
+                revertHeaders(response.getAllHeaders())));
+
         this.helper.setResponse(response.getStatusLine().getStatusCode(),
                 response.getEntity() == null ? null : response.getEntity().getContent(),
                 revertHeaders(response.getAllHeaders()));
@@ -210,13 +214,19 @@ public class SpecialRoutesFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
 
-        AbTestingRoute abTestRoute = getAbRoutingInfo( filterUtils.getServiceId() );
+        String serviceId = filterUtils.getServiceId();
+        System.out.println("serviceId: " + serviceId);
+
+        AbTestingRoute abTestRoute = getAbRoutingInfo(serviceId);
 
         if (abTestRoute!=null && useSpecialRoute(abTestRoute)) {
             String route = buildRouteString(ctx.getRequest().getRequestURI(),
                     abTestRoute.getEndpoint(),
                     ctx.get("serviceId").toString());
             forwardToSpecialRoute(route);
+
+            // TODO Added by gongzhaopeng
+            ctx.setSendZuulResponse(false);
         }
 
         return null;

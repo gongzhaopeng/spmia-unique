@@ -31,6 +31,8 @@ public class OrganizationRestTemplateClient {
                         HttpMethod.GET,
                         null, Organization.class, organizationId);
 
+        logger.debug(">>> Organization info: {}", restExchange);
+
         return restExchange.getBody();
     }
 }
