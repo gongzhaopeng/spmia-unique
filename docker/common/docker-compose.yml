@@ -22,20 +22,21 @@ services:
   #       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
   #       EUREKASERVER_PORT:8761
   #       ENCRYPT_KEY:       "IMSYMMETRIC"
-  zuulserver:
-      image: johncarnell/tmx-zuulsvr:unique
-      ports:
-        - "5555:5555"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "5555"
-        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        EUREKASERVER_PORT:        "8761"
-        DATABASESERVER_PORT:      "5432"
-        CONFIGSERVER_PORT:        "8888"
-        ORGSERVERNEW_PORT:        "8087"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
+#  zuulserver:
+#      image: johncarnell/tmx-zuulsvr:unique
+#      ports:
+#        - "5555:5555"
+#      environment:
+#        PROFILE: "default"
+#        SERVER_PORT: "5555"
+#        IP_ADDRESS: "10.254.173.251"
+#        CONFIGSERVER_URI: "http://configserver:8888"
+#        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+#        EUREKASERVER_PORT:        "8761"
+#        DATABASESERVER_PORT:      "5432"
+#        CONFIGSERVER_PORT:        "8888"
+#        ORGSERVERNEW_PORT:        "8087"
+#        ENCRYPT_KEY:       "IMSYMMETRIC"
   database:
       image: postgres:9.5
       ports:
@@ -51,6 +52,7 @@ services:
       environment:
         PROFILE: "default"
         SERVER_PORT: "8080"
+        IP_ADDRESS: "10.254.173.251"
 #        CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         EUREKASERVER_PORT:   "8761"
@@ -64,6 +66,7 @@ services:
       environment:
         PROFILE: "default"
         SERVER_PORT: "8085"
+        IP_ADDRESS: "10.254.173.251"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         EUREKASERVER_PORT:   "8761"
@@ -76,7 +79,8 @@ services:
         - "8086:8086"
       environment:
         PROFILE: "default"
-        SERVER_PORT: "8085"
+        SERVER_PORT: "8086"
+        IP_ADDRESS: "10.254.173.251"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         EUREKASERVER_PORT:   "8761"
@@ -103,6 +107,7 @@ services:
       environment:
         PROFILE: "default"
         SERVER_PORT: "8910"
+        IP_ADDRESS: "10.254.173.251"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         EUREKASERVER_PORT:        "8761"

@@ -9,6 +9,7 @@ logging:
 eureka:
   instance:
     preferIpAddress: true
+    ip-address: localhost
   client:
     registerWithEureka: true
     fetchRegistry: true
