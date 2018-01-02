@@ -69,6 +69,7 @@ services:
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice2:
       image: johncarnell/tmx-organization-service:unique
@@ -82,6 +83,7 @@ services:
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
 #  orgservice-new:
 #      image: johncarnell/tmx-orgservice-new:unique
