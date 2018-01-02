@@ -1,4 +1,4 @@
-package com.thoughtmechanix.licenses.utils;
+package com.thoughtmechanix.authentication.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class UserContextFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        logger.debug("I am entering the licensing service id with auth token: {}",
+        logger.debug("I am entering the authentication service id with auth token: {}",
                 httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
 
         UserContextHolder.getContext().setCorrelationId(

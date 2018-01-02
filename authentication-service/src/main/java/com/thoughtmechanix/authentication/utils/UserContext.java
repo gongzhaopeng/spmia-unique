@@ -1,4 +1,4 @@
-package com.thoughtmechanix.licenses.utils;
+package com.thoughtmechanix.authentication.utils;
 
 /**
  * Created by gongzhaopeng on 27/12/2017.

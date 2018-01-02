@@ -65,7 +65,7 @@ import java.security.cert.X509Certificate;
 import java.util.*;
 
 // Referring to SimpleHostRoutingFilter
-@Component
+//@Component
 public class SpecialRoutesFilter extends ZuulFilter {
     private static final Logger log = LoggerFactory.getLogger(SpecialRoutesFilter.class);
 
