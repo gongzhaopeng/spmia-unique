@@ -53,9 +53,12 @@ services:
         SERVER_PORT: "8080"
 #        CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        KAFKASERVER_URI: "kafkaserver"
+        ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
+        KAFKASERVER_PORT:    "2181"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice:
@@ -67,9 +70,12 @@ services:
         SERVER_PORT: "8085"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        KAFKASERVER_URI: "kafkaserver"
+        ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
+        KAFKASERVER_PORT:    "2181"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice2:
@@ -81,9 +87,12 @@ services:
         SERVER_PORT: "8086"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        KAFKASERVER_URI: "kafkaserver"
+        ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
+        KAFKASERVER_PORT:    "2181"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
 #  orgservice-new:
@@ -125,3 +134,8 @@ services:
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         ENCRYPT_KEY:       "IMSYMMETRIC"
+  kafkaserver:
+      image: spotify/kafka
+      ports:
+        - 2181:2181
+        - 9092:9092
