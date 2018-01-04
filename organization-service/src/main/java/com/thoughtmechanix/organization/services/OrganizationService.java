@@ -3,21 +3,40 @@ package com.thoughtmechanix.organization.services;
 import com.thoughtmechanix.organization.events.source.SimpleSourceBean;
 import com.thoughtmechanix.organization.model.Organization;
 import com.thoughtmechanix.organization.repository.OrganizationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class OrganizationService {
+    private static final Logger logger =
+            LoggerFactory.getLogger(OrganizationService.class);
+
     @Autowired
     private OrganizationRepository orgRepository;
+
+    @Autowired
+    Tracer tracer;
 
     @Autowired
     SimpleSourceBean simpleSourceBean;
 
     public Organization getOrg(String organizationId) {
-        return orgRepository.findById(organizationId);
+        Span newSpan = tracer.createSpan("getOrgDBCall");
+
+        logger.debug("In the organizationService.getOrg() call");
+        try {
+            return orgRepository.findById(organizationId);
+        } finally {
+            newSpan.tag("peer.service", "postgres");
+            newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);
+            tracer.close(newSpan);
+        }
     }
 
     public void saveOrg(Organization org){
