@@ -17,6 +17,10 @@ eureka:
     serviceUrl:
         defaultZone: http://localhost:8761/eureka/
 
+spring:
+  zipkin:
+    base-url: localhost:9411
+
 #
 #zuul:
 #  prefix:  /api

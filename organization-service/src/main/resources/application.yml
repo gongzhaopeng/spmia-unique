@@ -28,5 +28,10 @@ spring:
         binder:
           zk-nodes: localhost
           brokers: localhost
+  zipkin:
+    base-url: localhost:9411
+#  sleuth:
+#    sampler:
+#      percentage: 1
 
 

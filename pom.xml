@@ -27,6 +27,7 @@
         <module>orgservice-new</module>
         <module>specialroutes-service</module>
         <module>authentication-service</module>
+        <module>zipkinsvr</module>
     </modules>
 
     <build>

@@ -12,6 +12,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.sleuth.Sampler;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -67,6 +69,11 @@ public class Application {
         }
 
         return template;
+    }
+
+    @Bean
+    public Sampler defaultSampler() {
+        return new AlwaysSampler();
     }
 
     @Bean

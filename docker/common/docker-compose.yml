@@ -22,6 +22,13 @@ services:
   #       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
   #       EUREKASERVER_PORT:8761
   #       ENCRYPT_KEY:       "IMSYMMETRIC"
+  zipkin:
+      image: johncarnell/tmx-zipkinsvr:unique
+      ports:
+        - "9411:9411"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "9411"
   zuulserver:
       image: johncarnell/tmx-zuulsvr:unique
       ports:
@@ -31,10 +38,12 @@ services:
         SERVER_PORT: "5555"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
         EUREKASERVER_PORT:        "8761"
         DATABASESERVER_PORT:      "5432"
         CONFIGSERVER_PORT:        "8888"
         ORGSERVERNEW_PORT:        "8087"
+        ZIPKIN_PORT:         "9411"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   database:
       image: postgres:9.5
@@ -53,6 +62,7 @@ services:
         SERVER_PORT: "8080"
 #        CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
         KAFKASERVER_URI: "kafkaserver"
         ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
@@ -60,6 +70,7 @@ services:
         DATABASESERVER_PORT: "5432"
         KAFKASERVER_PORT:    "2181"
         REDIS_PORT:          "6379"
+        ZIPKIN_PORT:         "9411"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice:
@@ -71,12 +82,14 @@ services:
         SERVER_PORT: "8085"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
         KAFKASERVER_URI: "kafkaserver"
         ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
         KAFKASERVER_PORT:    "2181"
+        ZIPKIN_PORT:         "9411"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice2:
@@ -88,12 +101,14 @@ services:
         SERVER_PORT: "8086"
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
         KAFKASERVER_URI: "kafkaserver"
         ZKSERVER_URI: "kafkaserver"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
         KAFKASERVER_PORT:    "2181"
+        ZIPKIN_PORT:         "9411"
         AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
 #  orgservice-new:
@@ -144,3 +159,13 @@ services:
       ports:
         - 2181:2181
         - 9092:9092
+#  This is the openzipkin server.
+  # zipkin:
+  #   image: openzipkin/zipkin
+  #   ports:
+  #     - 9411:9411
+  logspout:
+      image: gliderlabs/logspout
+      command: syslog://logs6.papertrailapp.com:19615
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
