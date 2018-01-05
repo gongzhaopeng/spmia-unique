@@ -1,171 +1,96 @@
-version: '2'
-services:
-  eurekaserver:
-     image:   johncarnell/tmx-eurekasvr:unique
-     ports:
+eurekaserver:
+   image:   johncarnell/tmx-eurekasvr:${BUILD_NAME}
+   mem_limit: 1073741824
+   ports:
        - "8761:8761"
-  configserver:
-      image: johncarnell/tmx-confsvr:unique
-      ports:
-         - "8888:8888"
-      environment:
-         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-         EUREKASERVER_PORT: "8761"
-         ENCRYPT_KEY:       "IMSYMMETRIC"
-  # configserver2:
-  #     image: johncarnell/tmx-confsvr:unique
-  #     ports:
-  #        - "8889:8889"
-  #     links:
-  #         - "eurekaserver:eurekaserver"
-  #     environment:
-  #       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-  #       EUREKASERVER_PORT:8761
-  #       ENCRYPT_KEY:       "IMSYMMETRIC"
-  zipkin:
-      image: johncarnell/tmx-zipkinsvr:unique
-      ports:
-        - "9411:9411"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "9411"
-  zuulserver:
-      image: johncarnell/tmx-zuulsvr:unique
-      ports:
-        - "5555:5555"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "5555"
-        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        ZIPKIN_URI: "http://zipkin:9411"
-        EUREKASERVER_PORT:        "8761"
-        DATABASESERVER_PORT:      "5432"
-        CONFIGSERVER_PORT:        "8888"
-        ORGSERVERNEW_PORT:        "8087"
-        ZIPKIN_PORT:         "9411"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
-  database:
-      image: postgres:9.5
-      ports:
-      - "5432:5432"
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=p0stgr@s
-        - POSTGRES_DB=eagle_eye_local
-  licensingservice:
-      image: johncarnell/tmx-licensing-service:unique
-      ports:
-        - "8080:8080"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "8080"
-#        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        ZIPKIN_URI: "http://zipkin:9411"
-        KAFKASERVER_URI: "kafkaserver"
-        ZKSERVER_URI: "kafkaserver"
-        EUREKASERVER_PORT:   "8761"
-        CONFIGSERVER_PORT:   "8888"
-        DATABASESERVER_PORT: "5432"
-        KAFKASERVER_PORT:    "2181"
-        REDIS_PORT:          "6379"
-        ZIPKIN_PORT:         "9411"
-        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
-  organizationservice:
-      image: johncarnell/tmx-organization-service:unique
-      ports:
-        - "8085:8085"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "8085"
-        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        ZIPKIN_URI: "http://zipkin:9411"
-        KAFKASERVER_URI: "kafkaserver"
-        ZKSERVER_URI: "kafkaserver"
-        EUREKASERVER_PORT:   "8761"
-        CONFIGSERVER_PORT:   "8888"
-        DATABASESERVER_PORT: "5432"
-        KAFKASERVER_PORT:    "2181"
-        ZIPKIN_PORT:         "9411"
-        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
-#  organizationservice2:
-#      image: johncarnell/tmx-organization-service:unique
-#      ports:
-#        - "8086:8086"
-#      environment:
-#        PROFILE: "default"
-#        SERVER_PORT: "8086"
-#        CONFIGSERVER_URI: "http://configserver:8888"
-#        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-#        ZIPKIN_URI: "http://zipkin:9411"
-#        KAFKASERVER_URI: "kafkaserver"
-#        ZKSERVER_URI: "kafkaserver"
-#        EUREKASERVER_PORT:   "8761"
-#        CONFIGSERVER_PORT:   "8888"
-#        DATABASESERVER_PORT: "5432"
-#        KAFKASERVER_PORT:    "2181"
-#        ZIPKIN_PORT:         "9411"
-#        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
-#        ENCRYPT_KEY:       "IMSYMMETRIC"
-#  orgservice-new:
-#      image: johncarnell/tmx-orgservice-new:unique
-#      ports:
-#        - "8087:8087"
-#      environment:
-#        PROFILE: "default"
-#        SERVER_PORT: "8087"
-#        CONFIGSERVER_URI: "http://configserver:8888"
-#        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-#        EUREKASERVER_PORT:        "8761"
-#        DATABASESERVER_PORT:      "5432"
-#        CONFIGSERVER_PORT:        "8888"
-#        ENCRYPT_KEY:       "IMSYMMETRIC"
-#  specialroutes-service:
-#      image: johncarnell/tmx-specialroutes-service:unique
-#      ports:
-#        - "8910:8910"
-#      environment:
-#        PROFILE: "default"
-#        SERVER_PORT: "8910"
-#        CONFIGSERVER_URI: "http://configserver:8888"
-#        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-#        EUREKASERVER_PORT:        "8761"
-#        DATABASESERVER_PORT:      "5432"
-#        CONFIGSERVER_PORT:        "8888"
-#        ENCRYPT_KEY:       "IMSYMMETRIC"
-  authenticationservice:
-      image: johncarnell/tmx-authentication-service:unique
-      ports:
-        - "8901:8901"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "8901"
-        DATABASE_PORT:     5432
-        CONFIGSERVER_PORT: 8888
-        EUREKASERVER_PORT: 8761
-        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
-  redis:
-      image: redis:alpine
-      ports:
-        - 6379:6379
-  kafkaserver:
-      image: spotify/kafka
-      ports:
-        - 2181:2181
-        - 9092:9092
-#  This is the openzipkin server.
-  # zipkin:
-  #   image: openzipkin/zipkin
-  #   ports:
-  #     - 9411:9411
-  logspout:
-      image: gliderlabs/logspout
-      command: syslog://logs6.papertrailapp.com:19615
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
+
+configserver:
+    image: johncarnell/tmx-confsvr:${BUILD_NAME}
+    #mem_limit: 1073741824
+    mem_limit: 1000000000
+    ports:
+       - "8888:8888"
+    links:
+       - "eurekaserver:eurekaserver"
+    environment:
+       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+       ENCRYPT_KEY:       "IMSYMMETRIC"
+
+zuulserver:
+    image: johncarnell/tmx-zuulsvr:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "5555:5555"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "configserver:configserver"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "5555"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+licensingservice:
+    image: johncarnell/tmx-licensing-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8080:8080"
+    links:
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+      - "kafkaserver:kafkaserver"
+      - "authenticationservice:authenticationservice"
+    environment:
+      PROFILE: "aws-dev"
+      SERVER_PORT: "8080"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      KAFKASERVER_URI: "kafkaserver"
+      ZKSERVER_URI: "kafkaserver"
+      AUTHSERVER_URI:   "http://authenticationservice:8901/user"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+
+authenticationservice:
+    image: johncarnell/tmx-authentication-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8901:8901"
+    links:
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+    environment:
+      PROFILE: "aws-dev"
+      SERVER_PORT: "8901"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+
+organizationservice:
+    image: johncarnell/tmx-organization-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8085:8085"
+    links:
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+      - "kafkaserver:kafkaserver"
+      - "authenticationservice:authenticationservice"
+    environment:
+      PROFILE: "aws-dev"
+      SERVER_PORT: "8085"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      KAFKASERVER_URI: "kafkaserver"
+      ZKSERVER_URI: "kafkaserver"
+      AUTHSERVER_URI:   "http://authenticationservice:8901/user"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+
+kafkaserver:
+    image: spotify/kafka
+    mem_limit: 1073741824
+    ports:
+      - 2181:2181
+      - 9092:9092
