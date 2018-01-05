@@ -1,13 +1,13 @@
 eurekaserver:
    image:   johncarnell/tmx-eurekasvr:${BUILD_NAME}
-   mem_limit: 1073741824
+   mem_limit: 805306368
    ports:
        - "8761:8761"
 
 configserver:
     image: johncarnell/tmx-confsvr:${BUILD_NAME}
     #mem_limit: 1073741824
-    mem_limit: 1000000000
+    mem_limit: 805306368
     ports:
        - "8888:8888"
     links:
@@ -18,21 +18,23 @@ configserver:
 
 zuulserver:
     image: johncarnell/tmx-zuulsvr:${BUILD_NAME}
-    mem_limit: 1073741824
+    mem_limit: 805306368
     ports:
       - "5555:5555"
     links:
       - "eurekaserver:eurekaserver"
       - "configserver:configserver"
+      - "zipkin:zipkin"
     environment:
       PROFILE: "default"
       SERVER_PORT: "5555"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ZIPKIN_URI: "http://zipkin:9411"
 
 licensingservice:
     image: johncarnell/tmx-licensing-service:${BUILD_NAME}
-    mem_limit: 1073741824
+    mem_limit: 805306368
     ports:
       - "8080:8080"
     links:
@@ -41,6 +43,7 @@ licensingservice:
       - "zuulserver:zuulserver"
       - "kafkaserver:kafkaserver"
       - "authenticationservice:authenticationservice"
+      - "zipkin:zipkin"
     environment:
       PROFILE: "aws-dev"
       SERVER_PORT: "8080"
@@ -49,11 +52,12 @@ licensingservice:
       KAFKASERVER_URI: "kafkaserver"
       ZKSERVER_URI: "kafkaserver"
       AUTHSERVER_URI:   "http://authenticationservice:8901/user"
+      ZIPKIN_URI: "http://zipkin:9411"
       ENCRYPT_KEY:       "IMSYMMETRIC"
 
 authenticationservice:
     image: johncarnell/tmx-authentication-service:${BUILD_NAME}
-    mem_limit: 1073741824
+    mem_limit: 805306368
     ports:
       - "8901:8901"
     links:
@@ -69,7 +73,7 @@ authenticationservice:
 
 organizationservice:
     image: johncarnell/tmx-organization-service:${BUILD_NAME}
-    mem_limit: 1073741824
+    mem_limit: 805306368
     ports:
       - "8085:8085"
     links:
@@ -78,6 +82,7 @@ organizationservice:
       - "zuulserver:zuulserver"
       - "kafkaserver:kafkaserver"
       - "authenticationservice:authenticationservice"
+      - "zipkin:zipkin"
     environment:
       PROFILE: "aws-dev"
       SERVER_PORT: "8085"
@@ -86,11 +91,27 @@ organizationservice:
       KAFKASERVER_URI: "kafkaserver"
       ZKSERVER_URI: "kafkaserver"
       AUTHSERVER_URI:   "http://authenticationservice:8901/user"
+      ZIPKIN_URI: "http://zipkin:9411"
       ENCRYPT_KEY:       "IMSYMMETRIC"
 
 kafkaserver:
     image: spotify/kafka
-    mem_limit: 1073741824
+    mem_limit: 805306368
     ports:
-      - 2181:2181
-      - 9092:9092
+      - "2181:2181"
+      - "9092:9092"
+
+zipkin:
+    image: johncarnell/tmx-zipkinsvr:${BUILD_NAME}
+    mem_limit: 805306368
+    ports:
+      - "9411:9411"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "9411"
+
+logspout:
+      image: gliderlabs/logspout
+      command: syslog://logs6.papertrailapp.com:19615
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
