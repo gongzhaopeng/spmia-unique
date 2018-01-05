@@ -22,7 +22,7 @@ kafkaserver:
       - "9092:9092"
 
 zipkin:
-    image: atzu68/tmx-zipkinsvr:${BUILD_NAME}
+    image: gongzhaopeng/tmx-zipkinsvr:${BUILD_NAME}
     mem_limit: 805306368
     ports:
       - "9411:9411"
@@ -37,13 +37,13 @@ logspout:
       - /var/run/docker.sock:/var/run/docker.sock
 
 eurekaserver:
-   image:   atzu68/tmx-eurekasvr:${BUILD_NAME}
+   image:   gongzhaopeng/tmx-eurekasvr:${BUILD_NAME}
    mem_limit: 805306368
    ports:
        - "8761:8761"
 
 configserver:
-    image: atzu68/tmx-confsvr:${BUILD_NAME}
+    image: gongzhaopeng/tmx-confsvr:${BUILD_NAME}
     #mem_limit: 1073741824
     mem_limit: 805306368
     ports:
@@ -55,7 +55,7 @@ configserver:
        ENCRYPT_KEY:       "IMSYMMETRIC"
 
 zuulserver:
-    image: atzu68/tmx-zuulsvr:${BUILD_NAME}
+    image: gongzhaopeng/tmx-zuulsvr:${BUILD_NAME}
     mem_limit: 805306368
     ports:
       - "5555:5555"
@@ -71,7 +71,7 @@ zuulserver:
       ZIPKIN_URI: "http://zipkin:9411"
 
 authenticationservice:
-    image: atzu68/tmx-authentication-service:${BUILD_NAME}
+    image: gongzhaopeng/tmx-authentication-service:${BUILD_NAME}
     mem_limit: 805306368
     ports:
       - "8901:8901"
@@ -88,7 +88,7 @@ authenticationservice:
       ENCRYPT_KEY:       "IMSYMMETRIC"
 
 licensingservice:
-    image: atzu68/tmx-licensing-service:${BUILD_NAME}
+    image: gongzhaopeng/tmx-licensing-service:${BUILD_NAME}
     mem_limit: 805306368
     ports:
       - "8080:8080"
@@ -113,7 +113,7 @@ licensingservice:
       ENCRYPT_KEY:       "IMSYMMETRIC"
 
 organizationservice:
-    image: atzu68/tmx-organization-service:${BUILD_NAME}
+    image: gongzhaopeng/tmx-organization-service:${BUILD_NAME}
     mem_limit: 805306368
     ports:
       - "8085:8085"
