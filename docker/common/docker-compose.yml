@@ -1,3 +1,41 @@
+# +++ for local test.
+database:
+    image: postgres:9.5
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p0stgr@s
+      - POSTGRES_DB=eagle_eye_local
+
+redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+# --- for local test.
+
+kafkaserver:
+    image: spotify/kafka
+    mem_limit: 805306368
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+
+zipkin:
+    image: johncarnell/tmx-zipkinsvr:${BUILD_NAME}
+    mem_limit: 805306368
+    ports:
+      - "9411:9411"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "9411"
+
+logspout:
+      image: gliderlabs/logspout
+      command: syslog://logs6.papertrailapp.com:19615
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
 eurekaserver:
    image:   johncarnell/tmx-eurekasvr:${BUILD_NAME}
    mem_limit: 805306368
@@ -32,6 +70,22 @@ zuulserver:
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
       ZIPKIN_URI: "http://zipkin:9411"
 
+authenticationservice:
+    image: johncarnell/tmx-authentication-service:${BUILD_NAME}
+    mem_limit: 805306368
+    ports:
+      - "8901:8901"
+    links:
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+    environment:
+#      PROFILE: "aws-dev"
+      SERVER_PORT: "8901"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+
 licensingservice:
     image: johncarnell/tmx-licensing-service:${BUILD_NAME}
     mem_limit: 805306368
@@ -45,7 +99,7 @@ licensingservice:
       - "authenticationservice:authenticationservice"
       - "zipkin:zipkin"
     environment:
-      PROFILE: "aws-dev"
+#      PROFILE: "aws-dev"
       SERVER_PORT: "8080"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
@@ -53,22 +107,6 @@ licensingservice:
       ZKSERVER_URI: "kafkaserver"
       AUTHSERVER_URI:   "http://authenticationservice:8901/user"
       ZIPKIN_URI: "http://zipkin:9411"
-      ENCRYPT_KEY:       "IMSYMMETRIC"
-
-authenticationservice:
-    image: johncarnell/tmx-authentication-service:${BUILD_NAME}
-    mem_limit: 805306368
-    ports:
-      - "8901:8901"
-    links:
-      - "configserver:configserver"
-      - "eurekaserver:eurekaserver"
-      - "zuulserver:zuulserver"
-    environment:
-      PROFILE: "aws-dev"
-      SERVER_PORT: "8901"
-      CONFIGSERVER_URI: "http://configserver:8888"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
       ENCRYPT_KEY:       "IMSYMMETRIC"
 
 organizationservice:
@@ -84,7 +122,7 @@ organizationservice:
       - "authenticationservice:authenticationservice"
       - "zipkin:zipkin"
     environment:
-      PROFILE: "aws-dev"
+#      PROFILE: "aws-dev"
       SERVER_PORT: "8085"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
@@ -93,25 +131,3 @@ organizationservice:
       AUTHSERVER_URI:   "http://authenticationservice:8901/user"
       ZIPKIN_URI: "http://zipkin:9411"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-
-kafkaserver:
-    image: spotify/kafka
-    mem_limit: 805306368
-    ports:
-      - "2181:2181"
-      - "9092:9092"
-
-zipkin:
-    image: johncarnell/tmx-zipkinsvr:${BUILD_NAME}
-    mem_limit: 805306368
-    ports:
-      - "9411:9411"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "9411"
-
-logspout:
-      image: gliderlabs/logspout
-      command: syslog://logs6.papertrailapp.com:19615
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
