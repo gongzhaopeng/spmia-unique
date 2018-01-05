@@ -1,22 +1,25 @@
 #!/bin/sh
+getPort() {
+    echo $1 | cut -d : -f 3 | xargs basename
+}
 
 echo "********************************************************"
-echo "Waiting for the eureka server to start on port $EUREKASERVER_PORT"
+echo "Waiting for the eureka server to start on port $(getPort $EUREKASERVER_PORT)"
 echo "********************************************************"
-while ! `nc -z eurekaserver  $EUREKASERVER_PORT`; do sleep 3; done
+while ! `nc -z eurekaserver  $(getPort $EUREKASERVER_PORT)`; do sleep 3; done
 echo "******* Eureka Server has started"
 
 echo "********************************************************"
-echo "Waiting for the configuration server to start on port $CONFIGSERVER_PORT"
+echo "Waiting for the configuration server to start on port $(getPort $CONFIGSERVER_PORT)"
 echo "********************************************************"
-while ! `nc -z configserver $CONFIGSERVER_PORT`; do sleep 3; done
+while ! `nc -z configserver $(getPort $CONFIGSERVER_PORT)`; do sleep 3; done
 echo "*******  Configuration Server has started"
 
 echo "********************************************************"
-echo "Waiting for the ZIPKIN server to start  on port $ZIPKIN_PORT"
+echo "Waiting for the zipkin server to start on port $(getPort $ZIPKIN_PORT)"
 echo "********************************************************"
-while ! `nc -z zipkin $ZIPKIN_PORT`; do sleep 10; done
-echo "******* ZIPKIN has started"
+while ! `nc -z configserver $(getPort $ZIPKIN_PORT)`; do sleep 3; done
+echo "*******  Zipkin Server has started"
 
 echo "********************************************************"
 echo "Starting Zuul Service with $CONFIGSERVER_URI"
@@ -27,3 +30,4 @@ java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Dspring.profiles.active=$PROFILE                          \
      -Dspring.zipkin.baseUrl=$ZIPKIN_URI                       \
      -jar /usr/local/zuulservice/@project.build.finalName@.jar
+

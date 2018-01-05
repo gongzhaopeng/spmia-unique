@@ -52,7 +52,7 @@
         <start-class>com.thoughtmechanix.confsvr.ConfigServerApplication</start-class>
         <java.version>1.8</java.version>
         <docker.image.name>johncarnell/tmx-confsvr</docker.image.name>
-        <docker.image.tag>unique</docker.image.tag>
+        <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
     </properties>
 
     <build>

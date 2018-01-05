@@ -119,7 +119,7 @@
         <java.version>1.8</java.version>
         <start-class>com.thoughtmechanix.organization.Application</start-class>
         <docker.image.name>johncarnell/tmx-organization-service</docker.image.name>
-        <docker.image.tag>unique</docker.image.tag>
+        <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
     </properties>
 
     <build>
