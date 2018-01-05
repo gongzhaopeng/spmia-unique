@@ -18,7 +18,7 @@ echo "*******  Configuration Server has started"
 echo "********************************************************"
 echo "Waiting for the zipkin server to start on port $(getPort $ZIPKIN_PORT)"
 echo "********************************************************"
-while ! `nc -z configserver $(getPort $ZIPKIN_PORT)`; do sleep 3; done
+while ! `nc -z zipkin $(getPort $ZIPKIN_PORT)`; do sleep 3; done
 echo "*******  Zipkin Server has started"
 
 echo "********************************************************"

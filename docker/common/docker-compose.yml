@@ -79,6 +79,7 @@ authenticationservice:
       - "configserver:configserver"
       - "eurekaserver:eurekaserver"
       - "zuulserver:zuulserver"
+      - "database:database" # TODO
     environment:
 #      PROFILE: "aws-dev"
       SERVER_PORT: "8901"
@@ -98,6 +99,7 @@ licensingservice:
       - "kafkaserver:kafkaserver"
       - "authenticationservice:authenticationservice"
       - "zipkin:zipkin"
+      - "database:database" # TODO
     environment:
 #      PROFILE: "aws-dev"
       SERVER_PORT: "8080"
@@ -121,6 +123,7 @@ organizationservice:
       - "kafkaserver:kafkaserver"
       - "authenticationservice:authenticationservice"
       - "zipkin:zipkin"
+      - "database:database" # TODO
     environment:
 #      PROFILE: "aws-dev"
       SERVER_PORT: "8085"
