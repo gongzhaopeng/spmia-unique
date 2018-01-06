@@ -16,14 +16,14 @@
 
 kafkaserver:
     image: spotify/kafka
-    mem_limit: 805306368
+    mem_limit: 1073741824
     ports:
       - "2181:2181"
       - "9092:9092"
 
 zipkin:
     image: gongzhaopeng/tmx-zipkinsvr:${BUILD_NAME}
-    mem_limit: 805306368
+    mem_limit: 1073741824
     ports:
       - "9411:9411"
     environment:
@@ -32,20 +32,20 @@ zipkin:
 
 logspout:
     image: gliderlabs/logspout
+    mem_limit: 1073741824
     command: syslog://logs6.papertrailapp.com:19615
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
 eurekaserver:
    image:   gongzhaopeng/tmx-eurekasvr:${BUILD_NAME}
-   mem_limit: 805306368
+   mem_limit: 2147483648
    ports:
        - "8761:8761"
 
 configserver:
     image: gongzhaopeng/tmx-confsvr:${BUILD_NAME}
-    #mem_limit: 1073741824
-    mem_limit: 805306368
+    mem_limit: 1073741824
     ports:
        - "8888:8888"
     links:
@@ -56,7 +56,7 @@ configserver:
 
 zuulserver:
     image: gongzhaopeng/tmx-zuulsvr:${BUILD_NAME}
-    mem_limit: 805306368
+    mem_limit: 2147483648
     ports:
       - "5555:5555"
     links:
@@ -72,7 +72,7 @@ zuulserver:
 
 authenticationservice:
     image: gongzhaopeng/tmx-authentication-service:${BUILD_NAME}
-    mem_limit: 805306368
+    mem_limit: 2147483648
     ports:
       - "8901:8901"
     links:
@@ -89,7 +89,7 @@ authenticationservice:
 
 licensingservice:
     image: gongzhaopeng/tmx-licensing-service:${BUILD_NAME}
-    mem_limit: 805306368
+    mem_limit: 2147483648
     ports:
       - "8080:8080"
     links:
@@ -114,7 +114,7 @@ licensingservice:
 
 organizationservice:
     image: gongzhaopeng/tmx-organization-service:${BUILD_NAME}
-    mem_limit: 805306368
+    mem_limit: 2147483648
     ports:
       - "8085:8085"
     links:
