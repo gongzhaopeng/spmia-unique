@@ -27,8 +27,11 @@ before_install:
 - sudo curl -k -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
 - sudo chmod +x /usr/local/bin/ecs-cli
 - export BUILD_NAME=unique-$TRAVIS_BRANCH-$(date -u "+%Y%m%d%H%M%S")-$TRAVIS_BUILD_NUMBER
+- export CONTAINER_IP=13.124.209.156
+- export PLATFORM_TEST_NAME="unique-platform-tests"
 script:
 - sh travis_scripts/tag_build.sh
 - sh travis_scripts/build_services.sh
 - sh travis_scripts/deploy_to_docker_hub.sh
 - sh travis_scripts/deploy_to_amazon_ecs.sh
+- sh travis_scripts/trigger_platform_tests.sh
